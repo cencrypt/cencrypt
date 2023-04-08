@@ -1,7 +1,15 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local modules = Instance.new("Folder", ReplicatedStorage)
-modules.Name = "cencrypt modules"
+local moduleFolderName = "cencrypt modules"
+
+local modules = ReplicatedStorage:FindFirstChild(moduleFolderName)
+
+if modules ~= nil then
+    modules:Destroy()
+end
+
+modules = Instance.new("Folder", ReplicatedStorage)
+modules.Name = moduleFolderName
 
 local function makeModule(name, url)
     local module = Instance.new("ModuleScript", modules)
