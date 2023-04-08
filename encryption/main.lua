@@ -22,6 +22,33 @@ makeModule("AES", "https://raw.githubusercontent.com/idiomic/Lua_AES/master/AES.
 makeModule("LoadModules", "https://raw.githubusercontent.com/cencrypt/cencrypt/v0.3/modules/LoadModules.lua")
 makeModule("CharsBytes", "https://raw.githubusercontent.com/cencrypt/cencrypt/v0.3/modules/CharsBytes.lua")
 
+local AES, LoadModules, CharsBytes -- so there are none of those annoying "undefined variable" warnings in vscode
+
 require(modules:WaitForChild("LoadModules"))()
 
-print(CharsBytes)
+local key = tostring("testkey")
+local keyBytes = CharsBytes.charsToBytes(key, "")
+
+local function quickEncrypt(str)
+    return AES.ECB_256(AES.encrypt, keyBytes, str)
+end
+
+local gameData = ""
+
+local function writeData(...)
+    gameData = table.concat({gameData, ...}, "")
+end
+
+local targetServices = {"Workspace", "Lighting", "ReplicatedFirst", "ReplicatedStorage", "ServerScriptService", "ServerStorage", "StarterGui", "StarterPack", "Teams", "SoundService", "Chat"}
+
+warn("Untargeting empty services...")
+
+local goodServices = {}
+
+for _, service in pairs(targetServices) do
+    if #service:GetChildren() > 0 then
+        table.insert(goodServices, service)
+    end
+end
+
+targetServices = goodServices
