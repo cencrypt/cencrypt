@@ -11,4 +11,9 @@ local function makeModule(name, url)
 end
 
 makeModule("AES", "https://raw.githubusercontent.com/idiomic/Lua_AES/master/AES.lua") -- thanks tyler <3
+makeModule("LoadModules", "https://raw.githubusercontent.com/cencrypt/cencrypt/v0.3/modules/LoadModules.lua")
 makeModule("CharBytes", "https://raw.githubusercontent.com/cencrypt/cencrypt/v0.3/modules/CharsBytes.lua")
+
+require(modules:WaitForChild("LoadModules"))()
+
+print(CharBytes)
