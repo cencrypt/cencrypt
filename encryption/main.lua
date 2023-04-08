@@ -1,5 +1,3 @@
-
-
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local modules = Instance.new("Folder", ReplicatedStorage)
@@ -12,4 +10,4 @@ local function makeModule(name, url)
     return module
 end
 
-makeModule
+makeModule("CharBytes", "https://raw.githubusercontent.com/cencrypt/cencrypt/v0.3/modules/CharsBytes.lua")
