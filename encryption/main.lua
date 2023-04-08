@@ -1,7 +1,4 @@
-if false then
-    -- use in command bar to execute script
-    loadstring(game:GetService("HttpService"):GetAsync("https://raw.githubusercontent.com/cencrypt/cencrypt/v0.3/encryption/main.lua"))()
-end
+
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
@@ -14,3 +11,5 @@ local function makeModule(name, url)
     module.Source = game:GetService("HttpService"):GetAsync(url)
     return module
 end
+
+makeModule
