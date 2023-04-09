@@ -24,6 +24,7 @@ makeModule("LoadModules", "https://raw.githubusercontent.com/cencrypt/cencrypt/v
 makeModule("CharsBytes", "https://raw.githubusercontent.com/cencrypt/cencrypt/v0.3/modules/CharsBytes.lua")
 makeModule("GUID", "https://raw.githubusercontent.com/cencrypt/cencrypt/v0.3/modules/GUID.lua")
 makeModule("ScriptWrapper", "https://raw.githubusercontent.com/cencrypt/cencrypt/v0.3/modules/ScriptWrapper.lua")
+makeModule("SecureProps", "https://raw.githubusercontent.com/cencrypt/cencrypt/v0.3/modules/SecureProps.lua")
 
 -- so there are none of those annoying "undefined variable" warnings in vscode
 
@@ -115,4 +116,6 @@ for service, children in pairs(servicesChildren) do
 		end
 	end
 end
+
+warn("Mismatching and securing  instance's properties...")
 
