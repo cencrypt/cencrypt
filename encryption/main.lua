@@ -4,7 +4,7 @@ local moduleFolderName = "cencrypt modules"
 
 local modules = ReplicatedStorage:FindFirstChild(moduleFolderName)
 
-if modules ~= nil then
+if modules == nil then
     modules = Instance.new("Folder", ReplicatedStorage)
     modules.Name = moduleFolderName
 
