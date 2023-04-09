@@ -27,6 +27,8 @@ makeModule("ScriptWrapper", "https://raw.githubusercontent.com/cencrypt/cencrypt
 
 local AES, LoadModules, CharsBytes, GUID -- so there are none of those annoying "undefined variable" warnings in vscode
 
+print(modules:WaitForChild("LoadModules"))
+print("OKAY")
 require(modules:WaitForChild("LoadModules"))()
 
 local key = tostring("testkey")
