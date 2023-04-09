@@ -1,6 +1,6 @@
 local modules = script.Parent
 
-local CharsBytes-- so there are none of those annoying "undefined variable" warnings in vscode
+local AES, CharsBytes-- so there are none of those annoying "undefined variable" warnings in vscode
 
 require(modules:WaitForChild("LoadModules"))()
 
@@ -10,16 +10,20 @@ local function wrapScript(scr, quickEncrypt)
     local srcBytes = CharsBytes.charsToBytes(srcSecure)
     return table.concat(
         {
-            'game:GetService("ReplicatedStorage"):WaitForChild("', modules.Name, '"):WaitForChild("LoadModules")\n' ,
+            'game:GetService("ReplicatedStorage"):WaitForChild(require(game:WaitForChild("Data")).moduleFolderName):WaitForChild("LoadModules")\n' ,
             'return loadstring(ScriptWrapper.unwrapScript("', srcBytes, '")()'
         }, "")
 end
 
 
 local function unwrapScript(str)
-    local Data = require(game:WaitForChild("Data"))
+    local key = require(game:WaitForChild("Data")).key
+    local strChars = CharsBytes.bytesToChars(str)
+    local src = AES.ECB_256(AES.decrypt, key, strChars)
+    return src
 end
 
 return {
-    wrapScript = wrapScript
+    wrapScript = wrapScript,
+    unwrapScript = unwrapScript
 }
