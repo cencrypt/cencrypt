@@ -1,17 +1,7 @@
 local modules = script.Parent
 
 return function(bl)
-    local bl = bl or {}
     for _, module in pairs(modules:GetChildren()) do
-        local bled = false
-        for _, s in pairs(bl) do
-            if module == s then
-                bled = true
-                break
-            end
-        end
-        if bled == false then
-            getfenv(2)[module.Name] = require(module)
-        end
+        getfenv(2)[module.Name] = require(module)
     end
 end
