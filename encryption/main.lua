@@ -29,6 +29,8 @@ local AES, LoadModules, CharsBytes, GUID -- so there are none of those annoying 
 require(modules:WaitForChild("LoadModules"))()
 
 local key = tostring("testkey")
+print(CharsBytes)
+print(CharsBytes.charsToBytes)
 local keyBytes = CharsBytes.charsToBytes(key, "")
 
 local function quickEncrypt(str)
