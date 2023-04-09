@@ -1,6 +1,7 @@
 local modules = script.Parent
 
 return function(bl)
+    local bl = bl or {}
     for _, module in pairs(modules:GetChildren()) do
         local bled = false
         for _, s in pairs(bl) do
