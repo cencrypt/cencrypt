@@ -9,6 +9,7 @@ local function charsToBytes(str: string, sep: string?)
 end
 
 local function bytesToChars(str: string, sep: string)
+    local sep = sep or "!"
     local chars = {}
     string.gsub(str, "[^"..sep.."]+", function(byte)
         table.insert(chars, string.char(tonumber(byte)))
