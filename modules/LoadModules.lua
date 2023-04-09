@@ -11,9 +11,7 @@ return function(bl)
             end
         end
         if bled == false then
-            if module ~= getfenv(2).script then
-                getfenv(2)[module.Name] = require(module)
-            end
+            getfenv(2)[module.Name] = require(module)
         end
     end
 end
