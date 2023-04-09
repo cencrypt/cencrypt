@@ -2,7 +2,7 @@ local modules = script.Parent
 
 local AES, CharsBytes-- so there are none of those annoying "undefined variable" warnings in vscode
 
-require(modules:WaitForChild("LoadModules"))(script)
+require(modules:WaitForChild("LoadModules"))({script})
 
 local function wrapScript(scr, quickEncrypt)
     local src = scr.Source
