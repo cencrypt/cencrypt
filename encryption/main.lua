@@ -5,17 +5,18 @@ local moduleFolderName = "cencrypt modules"
 local modules = ReplicatedStorage:FindFirstChild(moduleFolderName)
 
 if modules ~= nil then
-    modules:Destroy()
+    modules = Instance.new("Folder", ReplicatedStorage)
+    modules.Name = moduleFolderName
+
 end
 
-modules = Instance.new("Folder", ReplicatedStorage)
-modules.Name = moduleFolderName
-
 local function makeModule(name, url)
-    local module = Instance.new("ModuleScript", modules)
-    module.Name = name
-    module.Source = game:GetService("HttpService"):GetAsync(url)
-    return module
+    if modules:FindFirstChild(name) == nil then
+        local module = Instance.new("ModuleScript", modules)
+        module.Name = name
+        module.Source = game:GetService("HttpService"):GetAsync(url)
+        return module
+    end
 end
 
 makeModule("AES", "https://raw.githubusercontent.com/idiomic/Lua_AES/master/AES.lua") -- thanks tyler <3
