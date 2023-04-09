@@ -22,8 +22,9 @@ makeModule("AES", "https://raw.githubusercontent.com/idiomic/Lua_AES/master/AES.
 makeModule("LoadModules", "https://raw.githubusercontent.com/cencrypt/cencrypt/v0.3/modules/LoadModules.lua")
 makeModule("CharsBytes", "https://raw.githubusercontent.com/cencrypt/cencrypt/v0.3/modules/CharsBytes.lua")
 makeModule("GUID", "https://raw.githubusercontent.com/cencrypt/cencrypt/v0.3/modules/GUID.lua")
+makeModule("ScriptWrapper", "https://raw.githubusercontent.com/cencrypt/cencrypt/v0.3/modules/ScriptWrapper.lua")
 
-local AES, LoadModules, CharsBytes -- so there are none of those annoying "undefined variable" warnings in vscode
+local AES, LoadModules, CharsBytes, GUID -- so there are none of those annoying "undefined variable" warnings in vscode
 
 require(modules:WaitForChild("LoadModules"))()
 
@@ -41,13 +42,24 @@ local function writeData(...)
 end
 
 local targetServices = {"Workspace", "Lighting", "ReplicatedFirst", "ReplicatedStorage", "ServerScriptService", "ServerStorage", "StarterGui", "StarterPack", "Teams", "SoundService", "Chat"}
+local ignoredClassNames = {}
+
 
 local function getServiceChildren(service)
     local children = game:GetService(service):GetChildren()
     local filtered = {}
     for _, child in pairs(children) do
         if child ~= modules then
-            table.insert(filtered, child)
+            local ignored = false
+            for _, className in pairs(ignoredClassNames) do
+                if className == child.ClassName then
+                    ignored = true
+                    break
+                end
+            end
+            if ignored == false then
+                table.insert(filtered, child)
+            end
         end
     end
     return filtered
@@ -73,4 +85,29 @@ for _, service in pairs(targetServices) do
     servicesChildren[service] = getServiceChildren(service)
 end
 
-warn("Grabbing services' children...")
+warn("Giving instances a unique identifier...")
+
+local instances = {
+    servicesChildren = {},
+    descendants = {}
+}
+
+for service, child in pairs(servicesChildren) do
+    local guid = GUID.makeModule()
+    instances.descendants[guid] = {
+        Name = child.Name
+    }
+    child.Name = guid
+    if servicesChildren[service]  == nil then
+        servicesChildren[service] = {}
+    end
+    table.insert(servicesChildren[service], guid)
+    for _, inst in pairs(child:GetDescendants()) do
+        local guid = GUID.makeModule()
+        instances.descendants[guid] = {
+            Name = inst.Name
+        }
+        inst.Name = guid
+    end
+end
+
