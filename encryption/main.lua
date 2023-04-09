@@ -23,6 +23,7 @@ makeModule("LoadModules", "https://raw.githubusercontent.com/cencrypt/cencrypt/v
 makeModule("CharsBytes", "https://raw.githubusercontent.com/cencrypt/cencrypt/v0.3/modules/CharsBytes.lua")
 makeModule("GUID", "https://raw.githubusercontent.com/cencrypt/cencrypt/v0.3/modules/GUID.lua")
 makeModule("ScriptWrapper", "https://raw.githubusercontent.com/cencrypt/cencrypt/v0.3/modules/ScriptWrapper.lua")
+makeModule("Config", "https://raw.githubusercontent.com/cencrypt/cencrypt/v0.3/modules/Config.lua")
 
 local AES, LoadModules, CharsBytes, GUID -- so there are none of those annoying "undefined variable" warnings in vscode
 
