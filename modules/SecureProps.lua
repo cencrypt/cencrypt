@@ -25,7 +25,13 @@ local classNameProps = {
 		{
 			Text = "cencrypt lol"
 		}
-	}
+	},
+    {
+        {"Script", "LocalScript", "ModuleScript"},
+        {
+            Enabled = false
+        }
+    }
 }
 
 local function checkClassName(inst, classNames)
