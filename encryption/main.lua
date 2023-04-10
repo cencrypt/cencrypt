@@ -38,7 +38,7 @@ local function quickEncrypt(str)
 end
 
 local targetServices = {"Workspace", "Lighting", "ReplicatedFirst", "ReplicatedStorage", "ServerScriptService", "ServerStorage", "StarterGui", "StarterPack", "Teams", "SoundService", "Chat"}
-local ignoredClassNames = {}
+local ignoredClassNames = {"Terrain"}
 
 local CEN = game:FindFirstChild("CEN")
 
