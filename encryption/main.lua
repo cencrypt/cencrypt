@@ -109,6 +109,7 @@ for service, children in pairs(servicesChildren) do
 				instances.servicesChildren[service] = {}
 			end
 			table.insert(instances.servicesChildren[service], guid)
+			child.Parent = CEN
 			for _, inst in pairs(child:GetDescendants()) do
 				local guid = GUID.makeGUID()
 				instances.descendants[guid] = {
