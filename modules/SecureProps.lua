@@ -1,6 +1,7 @@
 local modules = script.Parent
 
-local ScriptWrapper = loadstring(modules:WaitForChild("ScriptWrapper").Source)()
+local ScriptWrapper = require(modules:WaitForChild("ScriptWrapper"))
+local CharsBytes = require(modules:WaitForChild("CharsBytes"))
 
 local classNameProps = {
 	{
@@ -55,6 +56,10 @@ local function valToString(val)
 	return
 end
 
+local function svalToVal(sval)
+
+end
+
 local function covInst(inst, quickEncrypt)
 	local changedData = {}
 	for _, propC in pairs(classNameProps) do
@@ -75,8 +80,15 @@ local function covInst(inst, quickEncrypt)
 	return changedData
 end
 
-local function deCovInst(inst)
-	
+local function deCovInst(inst, id, quickDecrypt)
+	local data = require(game:WaitForChild("Data"))
+	local props = data.descendants[id]
+	if props then
+		for prop, sval in pairs(props) do
+			local sval = CharsBytes.bytesToChars(quickDecrypt(sval))
+			
+		end
+	end
 end
 
 return {

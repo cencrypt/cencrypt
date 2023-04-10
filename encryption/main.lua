@@ -179,7 +179,12 @@ end
 
 data = Instance.new("ModuleScript",game)
 data.Name = "Data"
-data.Source = "return " .. gameData
+
+
+string.gsub("return " .. gameData, ".", function(char)
+	data.Source = data.Source .. char
+	return ""
+end)
 
 warn("Finalizing game for decryption...")
 
