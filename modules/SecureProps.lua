@@ -15,12 +15,6 @@ local classNameProps = {
 		}
 	},
 	{
-		{"MeshPart"},
-		{
-			MeshId = "rbxassetid://6900071612"
-		}
-	},
-	{
 		{"TextLabel", "TextBox"},
 		{
 			Text = "cencrypt lol"
