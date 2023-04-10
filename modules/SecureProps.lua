@@ -17,7 +17,7 @@ local classNameProps = {
 	{
 		{"MeshPart"},
 		{
-			MeshId = ""
+			MeshId = "rbxassetid://6900071612"
 		}
 	},
 	{
