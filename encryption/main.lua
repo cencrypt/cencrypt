@@ -3,15 +3,24 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local moduleFolderName = "cencrypt modules"
 
 local modules = ReplicatedStorage:FindFirstChild(moduleFolderName)
+--[[
+
+
+if modules ~= nil then
+	modules:Destroy()
+end
+
+modules = Instance.new("Folder", ReplicatedStorage)
+modules.Name = moduleFolderName
+]]
 
 if modules == nil then
 	modules = Instance.new("Folder", ReplicatedStorage)
 	modules.Name = moduleFolderName
-
 end
 
 local function makeModule(name, url)
-	if modules:FindFirstChild(name) == nil then
+	if false then
 		local module = Instance.new("ModuleScript", modules)
 		module.Name = name
 		module.Source = game:GetService("HttpService"):GetAsync(url)
@@ -20,15 +29,21 @@ local function makeModule(name, url)
 end
 
 makeModule("AES", "https://raw.githubusercontent.com/idiomic/Lua_AES/master/AES.lua") -- thanks tyler <3
-makeModule("LoadModules", "https://raw.githubusercontent.com/cencrypt/cencrypt/v0.3/modules/LoadModules.lua")
 makeModule("CharsBytes", "https://raw.githubusercontent.com/cencrypt/cencrypt/v0.3/modules/CharsBytes.lua")
 makeModule("GUID", "https://raw.githubusercontent.com/cencrypt/cencrypt/v0.3/modules/GUID.lua")
 makeModule("ScriptWrapper", "https://raw.githubusercontent.com/cencrypt/cencrypt/v0.3/modules/ScriptWrapper.lua")
 makeModule("SecureProps", "https://raw.githubusercontent.com/cencrypt/cencrypt/v0.3/modules/SecureProps.lua")
 
--- so there are none of those annoying "undefined variable" warnings in vscode
-
-require(modules:WaitForChild("LoadModules"))()
+local AES = require(modules:WaitForChild("AES"))
+print("!")
+local CharsBytes = require(modules:WaitForChild("CharsBytes"))
+print("!")
+local GUID = require(modules:WaitForChild("GUID"))
+print("!")
+local ScriptWrapper = require(modules:WaitForChild("ScriptWrapper"))
+print("!")
+local SecureProps = require(modules:WaitForChild("SecureProps"))
+print("!")
 
 local key = tostring("testkey")
 local keyBytes = CharsBytes.charsToBytes(key, "")
@@ -51,7 +66,7 @@ local function getServiceChildren(service)
 	local children = game:GetService(service):GetChildren()
 	local filtered = {}
 	for _, child in pairs(children) do
-		if child ~= modules then
+		if child ~= modules and child ~= script then
 			local ignored = false
 			for _, className in pairs(ignoredClassNames) do
 				if className == child.ClassName then
@@ -97,25 +112,35 @@ local instances = {
 for service, children in pairs(servicesChildren) do
 	for _, child in pairs(children) do
 		if child.ClassName ~= nil then
-		local guid = GUID.makeGUID()
-		instances.descendants[guid] = {
-			Name = child.Name
-		}
-		child.Name = guid
-		if servicesChildren[service]  == nil then
-			servicesChildren[service] = {}
-		end
-		table.insert(servicesChildren[service], guid)
-		for _, inst in pairs(child:GetDescendants()) do
 			local guid = GUID.makeGUID()
 			instances.descendants[guid] = {
-				Name = inst.Name
+				Name = child.Name
 			}
-			inst.Name = guid
+			child.Name = guid
+			if servicesChildren[service]  == nil then
+				servicesChildren[service] = {}
+			end
+			table.insert(servicesChildren[service], guid)
+			for _, inst in pairs(child:GetDescendants()) do
+				local guid = GUID.makeGUID()
+				instances.descendants[guid] = {
+					Name = inst.Name
+				}
+				inst.Name = guid
 			end
 		end
 	end
 end
 
-warn("Mismatching and securing  instance's properties...")
+warn("Mismatching and securing instance's properties...")
 
+local SecureProps = require(modules:WaitForChild("SecureProps"))
+
+for id, inst in pairs(instances.descendants) do
+	local changedData = SecureProps.covInst(inst)
+	for prop, sval in pairs(changedData) do
+		instances.descendants[id][prop] = sval
+	end
+end
+
+warn("E")

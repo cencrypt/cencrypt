@@ -1,6 +1,7 @@
 local modules = script.Parent
 
-require(modules:WaitForChild("LoadModules"))({script})
+local AES = require(modules:WaitForChild("AES"))
+local CharsBytes = require(modules:WaitForChild("CharsBytes"))
 
 local function wrapScript(scr, quickEncrypt)
     local src = scr.Source
