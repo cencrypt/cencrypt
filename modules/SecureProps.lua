@@ -21,7 +21,7 @@ local classNameProps = {
 		}
 	},
     {
-        {"Script", "LocalScript", "ModuleScript"},
+        {"Script", "LocalScript"},
         {
             Enabled = false
         }
