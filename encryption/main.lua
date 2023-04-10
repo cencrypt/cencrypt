@@ -1,3 +1,5 @@
+script = game:GetService("ServerStorage"):FindFirstChildWhichIsA("Script")
+
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local moduleFolderName = "cencrypt modules"
@@ -35,15 +37,10 @@ makeModule("ScriptWrapper", "https://raw.githubusercontent.com/cencrypt/cencrypt
 makeModule("SecureProps", "https://raw.githubusercontent.com/cencrypt/cencrypt/v0.3/modules/SecureProps.lua")
 
 local AES = require(modules:WaitForChild("AES"))
-print("!")
 local CharsBytes = require(modules:WaitForChild("CharsBytes"))
-print("!")
 local GUID = require(modules:WaitForChild("GUID"))
-print("!")
 local ScriptWrapper = require(modules:WaitForChild("ScriptWrapper"))
-print("!")
 local SecureProps = require(modules:WaitForChild("SecureProps"))
-print("!")
 
 local key = tostring("testkey")
 local keyBytes = CharsBytes.charsToBytes(key, "")
@@ -114,16 +111,18 @@ for service, children in pairs(servicesChildren) do
 		if child.ClassName ~= nil then
 			local guid = GUID.makeGUID()
 			instances.descendants[guid] = {
+				Instance = child,
 				Name = child.Name
 			}
 			child.Name = guid
-			if servicesChildren[service]  == nil then
-				servicesChildren[service] = {}
+			if instances.servicesChildren[service]  == nil then
+				instances.servicesChildren[service] = {}
 			end
-			table.insert(servicesChildren[service], guid)
+			table.insert(instances.servicesChildren[service], guid)
 			for _, inst in pairs(child:GetDescendants()) do
 				local guid = GUID.makeGUID()
 				instances.descendants[guid] = {
+					Instance = inst,
 					Name = inst.Name
 				}
 				inst.Name = guid
@@ -134,13 +133,13 @@ end
 
 warn("Mismatching and securing instance's properties...")
 
-local SecureProps = require(modules:WaitForChild("SecureProps"))
+local SecureProps = loadstring(modules:WaitForChild("SecureProps").Source)()
 
 for id, inst in pairs(instances.descendants) do
-	local changedData = SecureProps.covInst(inst)
+	local changedData = SecureProps.covInst(inst.Instance, quickEncrypt)
 	for prop, sval in pairs(changedData) do
 		instances.descendants[id][prop] = sval
 	end
 end
 
-warn("E")
+print(instances)

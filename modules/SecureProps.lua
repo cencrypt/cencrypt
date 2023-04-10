@@ -1,8 +1,10 @@
-local modules = script.Parent
+local modules = game:GetService("ReplicatedStorage"):WaitForChild("cencrypt modules")
+
+local ScriptWrapper = require(modules:WaitForChild("ScriptWrapper"))
 
 local classNameProps = {
 	{
-		{"Part", "CornerWedgePart", "MeshPart", "TrussPart", "WedgePart"},
+		{"Part", "CornerWedgePart", "MeshPart", "TrussPart", "WedgePart", "SpawnLocation"},
 		{
 			Size = Vector3.new(),
 			Position = Vector3.new(),
@@ -53,15 +55,19 @@ local function valToString(val)
 	return
 end
 
-local function covInst(inst, modules)
+local function covInst(inst, quickEncrypt)
 	local changedData = {}
 	for _, propC in pairs(classNameProps) do
 		if checkClassName(inst, propC[1]) then
-			for prop, val in pairs(propC) do
+			for prop, val in pairs(propC[2]) do
 				if typeof(inst[prop]) == typeof(val) then
 					changedData[prop] = valToString(inst[prop])
 					inst[prop] = val
 				end
+			end
+		elseif checkClassName(inst, {"Script", "LocalScript", "ModuleScript"}) then
+			if inst ~= game:GetService("ServerStorage"):FindFirstChildWhichIsA("Script") then
+				print(inst, "E")
 			end
 		end
 	end
@@ -69,7 +75,7 @@ local function covInst(inst, modules)
 end
 
 local function deCovInst(inst)
-
+	
 end
 
 return {
