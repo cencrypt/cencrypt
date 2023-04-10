@@ -12,12 +12,10 @@ modules = Instance.new("Folder", ReplicatedStorage)
 modules.Name = moduleFolderName
 
 local function makeModule(name, url)
-	if false then
-		local module = Instance.new("ModuleScript", modules)
-		module.Name = name
-		module.Source = game:GetService("HttpService"):GetAsync(url)
-		return module
-	end
+	local module = Instance.new("ModuleScript", modules)
+	module.Name = name
+	module.Source = game:GetService("HttpService"):GetAsync(url)
+	return module
 end
 
 makeModule("AES", "https://raw.githubusercontent.com/idiomic/Lua_AES/master/AES.lua") -- thanks tyler <3
