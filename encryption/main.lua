@@ -40,6 +40,14 @@ end
 local targetServices = {"Workspace", "Lighting", "ReplicatedFirst", "ReplicatedStorage", "ServerScriptService", "ServerStorage", "StarterGui", "StarterPack", "Teams", "SoundService", "Chat"}
 local ignoredClassNames = {}
 
+local CEN = game:FindFirstChild("CEN")
+
+if CEN ~= nil then
+	CEN:Destroy()
+end
+
+CEN = Instance.new("Folder", game)
+CEN.Name = "CEN"
 
 local function getServiceChildren(service)
 	local children = game:GetService(service):GetChildren()
@@ -81,7 +89,7 @@ for _, service in pairs(targetServices) do
 	servicesChildren[service] = getServiceChildren(service)
 end
 
-warn("Giving instances a unique identifier...")
+warn("Giving instances a unique identifier and moving children to folder...")
 
 local instances = {
 	servicesChildren = {},
@@ -171,3 +179,7 @@ end
 data = Instance.new("ModuleScript",game)
 data.Name = "Data"
 data.Source = "return " .. gameData
+
+warn("Finalizing game...")
+
+game:GetService("Players").CharacterAutoLoads = false
