@@ -10,7 +10,7 @@ local function wrapScript(scr, quickEncrypt)
     return table.concat(
         {
 			'local ScriptWrapper = require(game:GetService("ReplicatedStorage"):WaitForChild(require(game:WaitForChild("Data")).moduleFolderName):WaitForChild("ScriptWrapper"))\n' ,
-            'return loadstring(ScriptWrapper.unwrapScript("', srcBytes, '")()'
+            'return loadstring(ScriptWrapper.unwrapScript("', srcBytes, '"))()'
         }, "")
 end
 

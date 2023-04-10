@@ -1,6 +1,6 @@
-local modules = game:GetService("ReplicatedStorage"):WaitForChild("cencrypt modules")
+local modules = script.Parent
 
-local ScriptWrapper = require(modules:WaitForChild("ScriptWrapper"))
+local ScriptWrapper = loadstring(modules:WaitForChild("ScriptWrapper").Source)()
 
 local classNameProps = {
 	{
@@ -65,10 +65,11 @@ local function covInst(inst, quickEncrypt)
 					inst[prop] = val
 				end
 			end
-		elseif checkClassName(inst, {"Script", "LocalScript", "ModuleScript"}) then
-			if inst ~= game:GetService("ServerStorage"):FindFirstChildWhichIsA("Script") then
-				print(inst, "E")
-			end
+		end
+	end
+	if checkClassName(inst, {"Script", "LocalScript", "ModuleScript"}) then
+		if inst ~= game:GetService("ServerStorage"):FindFirstChildWhichIsA("Script") then
+			inst.Source = ScriptWrapper.wrapScript(inst, quickEncrypt)
 		end
 	end
 	return changedData

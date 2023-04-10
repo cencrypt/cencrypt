@@ -1,12 +1,8 @@
-script = game:GetService("ServerStorage"):FindFirstChildWhichIsA("Script")
-
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local moduleFolderName = "cencrypt modules"
 
 local modules = ReplicatedStorage:FindFirstChild(moduleFolderName)
---[[
-
 
 if modules ~= nil then
 	modules:Destroy()
@@ -14,12 +10,6 @@ end
 
 modules = Instance.new("Folder", ReplicatedStorage)
 modules.Name = moduleFolderName
-]]
-
-if modules == nil then
-	modules = Instance.new("Folder", ReplicatedStorage)
-	modules.Name = moduleFolderName
-end
 
 local function makeModule(name, url)
 	if false then
@@ -47,12 +37,6 @@ local keyBytes = CharsBytes.charsToBytes(key, "")
 
 local function quickEncrypt(str)
 	return AES.ECB_256(AES.encrypt, keyBytes, str)
-end
-
-local gameData = ""
-
-local function writeData(...)
-	gameData = table.concat({gameData, ...}, "")
 end
 
 local targetServices = {"Workspace", "Lighting", "ReplicatedFirst", "ReplicatedStorage", "ServerScriptService", "ServerStorage", "StarterGui", "StarterPack", "Teams", "SoundService", "Chat"}
@@ -132,8 +116,7 @@ for service, children in pairs(servicesChildren) do
 end
 
 warn("Mismatching and securing instance's properties...")
-
-local SecureProps = loadstring(modules:WaitForChild("SecureProps").Source)()
+warn("Encrypting scripts...")
 
 for id, inst in pairs(instances.descendants) do
 	local changedData = SecureProps.covInst(inst.Instance, quickEncrypt)
@@ -142,4 +125,51 @@ for id, inst in pairs(instances.descendants) do
 	end
 end
 
-print(instances)
+warn("Encrypting and writing data...")
+
+local gameData = ""
+
+local function writeData(...)
+	gameData = table.concat({gameData, ...}, "")
+end
+
+local function s(str)
+	return '"' .. str .. '"'
+end
+
+writeData("{sanity=", s(CharsBytes.charsToBytes(quickEncrypt("sanity"))), ";moduleFolderName=", s(CharsBytes.charsToBytes(moduleFolderName)), ";servicesChildren={")
+
+for service, ids in pairs(instances.servicesChildren) do
+	writeData(service, "={")
+	for _, id in pairs(ids) do
+		writeData(s(id), ";")
+	end
+	writeData("};")
+end
+
+writeData("};", "descendants={")
+
+for id, props in pairs(instances.descendants) do
+	writeData("[", s(id), "]={")
+	for prop, sval in pairs(props) do
+		if prop == "Instance" then
+			continue
+		end
+		writeData("[", s(prop), "]=", s(CharsBytes.charsToBytes(quickEncrypt(sval))), ";")
+	end
+	writeData("};")
+end
+
+writeData("};};")
+
+warn("Saving data to module...")
+
+local data = game:FindFirstChild("Data")
+
+if data then
+	data:Destroy()
+end
+
+data = Instance.new("ModuleScript",game)
+data.Name = "Data"
+data.Source = "return " .. gameData
