@@ -180,7 +180,6 @@ end
 data = Instance.new("ModuleScript",game)
 data.Name = "Data"
 
-
 string.gsub("return " .. gameData, ".", function(char)
 	data.Source = data.Source .. char
 	return ""

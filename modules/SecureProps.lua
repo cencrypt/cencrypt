@@ -85,8 +85,8 @@ local function deCovInst(inst, id, quickDecrypt)
 	local props = data.descendants[id]
 	if props then
 		for prop, sval in pairs(props) do
-			local sval = CharsBytes.bytesToChars(quickDecrypt(sval))
-			
+			local sval = quickDecrypt(CharsBytes.bytesToChars(sval))
+
 		end
 	end
 end
