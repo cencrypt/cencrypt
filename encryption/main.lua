@@ -181,6 +181,6 @@ data = Instance.new("ModuleScript",game)
 data.Name = "Data"
 data.Source = "return " .. gameData
 
-warn("Finalizing game...")
+warn("Finalizing game for decryption...")
 
 loadstring(game:GetService("HttpService"):GetAsync("https://raw.githubusercontent.com/cencrypt/cencrypt/v0.3/decryption/setup.lua"))()
